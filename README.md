@@ -21,4 +21,12 @@ There are multiple ways to share code among different parts of the system, so we
 ### Tools and Options
 CLJS Test runner -> https://github.com/bensu/doo
 
+
 ## FullStack Language -> clojureScript
+
+
+# References
+
+React Native + ClojureScript tips
+http://cljsrn.org
+
