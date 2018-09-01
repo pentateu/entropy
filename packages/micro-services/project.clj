@@ -4,6 +4,8 @@
 
   :min-lein-version "2.7.1"
 
+  :jvm-opts ["--add-modules" "java.xml.bind"]
+
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.908"]]
 
@@ -15,25 +17,22 @@
   :clean-targets ["server.js"
                   "target"]
 
-  :cljsbuild {
-    :builds [{:id "dev"
-              :source-paths ["src"]
-              :figwheel true
-              :compiler {
-                :main micro-services.core
-                :asset-path "target/js/compiled/dev"
-                :output-to "target/js/compiled/micro_services.js"
-                :output-dir "target/js/compiled/dev"
-                :target :nodejs
-                :optimizations :none
-                :source-map-timestamp true}}
-             {:id "prod"
-              :source-paths ["src"]
-              :compiler {
-                :output-to "server.js"
-                :output-dir "target/js/compiled/prod"
-                :target :nodejs
-                :optimizations :simple}}]}
+  :cljsbuild {:builds [{:id "dev"
+                        :source-paths ["src"]
+                        :figwheel true
+                        :compiler {:main micro-services.core
+                                   :asset-path "target/js/compiled/dev"
+                                   :output-to "target/js/compiled/micro_services.js"
+                                   :output-dir "target/js/compiled/dev"
+                                   :target :nodejs
+                                   :optimizations :none
+                                   :source-map-timestamp true}}
+                       {:id "prod"
+                        :source-paths ["src"]
+                        :compiler {:output-to "server.js"
+                                   :output-dir "target/js/compiled/prod"
+                                   :target :nodejs
+                                   :optimizations :simple}}]}
 
   :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.13"]
                                   [com.cemerick/piggieback "0.2.2"]]

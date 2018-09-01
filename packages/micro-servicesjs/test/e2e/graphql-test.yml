@@ -1,0 +1,34 @@
+meta:
+  name: Graphql API
+configuration:
+  scheme: http
+  host: api
+  port: 3050
+  base_path: /api
+
+specs:
+  - name: Node Health
+    request:
+      path: /~node/health
+      method: get
+    response:
+      status_code: 200
+      headers:
+        - name: content-type
+          value: !!js/regexp application/json     
+      # json_data:
+      #   - path: $.name
+      #     value: graphql
+
+  - name: Basic moleculer setup - using graphql.health
+    request:
+      path: /graphql/health
+      method: get
+    response:
+      status_code: 200
+      headers:
+        - name: content-type
+          value: !!js/regexp application/json     
+      json_data:
+        - path: $.name
+          value: graphql

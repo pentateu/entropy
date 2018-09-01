@@ -1,0 +1,27 @@
+{
+  "name": "micro-servicesjs",
+  "version": "0.1.0",
+  "private": "true",
+  "scripts": {
+    "dev": "moleculer-runner --repl --hot --config moleculer.dev.config.js src",
+    "start-api": "moleculer-runner -i 2 src/api",
+    "start-core": "moleculer-runner -i 2 src/core",
+    "api-tests": "concurrently \"npm run api-tests-server\" \"npm run api-tests-watch\" ",
+    "api-tests-server": "http-server /services -p $PORT",
+    "api-tests-watch": "nodemon -x 'just-api --reporter html /services/test/e2e/'"
+  },
+  "engines": {
+    "node": "9.x"
+  },
+  "dependencies": {
+    "jest": "^23.5.0",
+    "moleculer": "^0.13.2",
+    "moleculer-web": "^0.8.1"
+  },
+  "devDependencies": {
+    "concurrently": "^4.0.1",
+    "http-server": "^0.11.1",
+    "just-api": "^1.2.0",
+    "nodemon": "^1.18.4"
+  }
+}
