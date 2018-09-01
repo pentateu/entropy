@@ -610,16 +610,18 @@ footer {
             <div class="just-api-top-header">
                 <div class="just-api-label">Just-API Report</div>
                 <div class="just-api-summary">
-                <span>0 Skipped, 0 Failed, 2 Passed ( 2 Tests )</span>
+                <span>0 Skipped, 2 Failed, 0 Passed ( 2 Tests )</span>
                 <br>
-                <span>0 Skipped, 0 Failed, 1 Passed ( 1 Suites )</span>
+                <span>0 Skipped, 1 Failed, 0 Passed ( 1 Suites )</span>
                 <br>
-                <span>Duration: 316ms</span>
+                <span>Duration: 348ms</span>
                 <br>
-                <span>Sat, 01 Sep 2018 08:54:38 GMT</span>
+                <span>Sat, 01 Sep 2018 09:47:30 GMT</span>
                 </div>
             </div>
-            <ul id="report"><li class="suite"><h1 class="suite-name">/services/test/e2e/graphql-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Node Health <span class="duration">( 42ms )</span></h2></li><li class="test pass"><h2 class="test-name">Basic moleculer setup - using graphql.health <span class="duration">( 33ms )</span></h2></li><span class="suite-name-hidden">Graphql API</span></ul></li></ul>
+            <ul id="report"><li class="suite"><h1 class="suite-name">/services/test/e2e/graphql-test.yml</h1><ul><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">Node Health <span class="duration">( 46ms )</span></h2><pre class="error">Error: connect ECONNREFUSED 172.27.0.13:3050
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1161:14)</pre></li><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">Basic moleculer setup - using graphql.health <span class="duration">( 9ms )</span></h2><pre class="error">Error: connect ECONNREFUSED 172.27.0.13:3050
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1161:14)</pre></li><span class="suite-name-hidden">Graphql API</span></ul></li></ul>
         </div>
         <script>
         'use strict';

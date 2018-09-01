@@ -4,8 +4,8 @@
   "private": "true",
   "scripts": {
     "dev": "moleculer-runner --repl --hot --config moleculer.dev.config.js src",
-    "start-api": "moleculer-runner -i 2 src/api",
-    "start-core": "moleculer-runner -i 2 src/core",
+    "start-api": "moleculer-runner -i 2 src/api;src/metrics",
+    "start-core": "moleculer-runner -i 2 src/core;src/metrics",
     "api-tests": "concurrently \"npm run api-tests-server\" \"npm run api-tests-watch\" ",
     "api-tests-server": "http-server /services -p $PORT",
     "api-tests-watch": "nodemon -x 'just-api --reporter html /services/test/e2e/'"
@@ -16,6 +16,8 @@
   "dependencies": {
     "jest": "^23.5.0",
     "moleculer": "^0.13.2",
+    "moleculer-jaeger": "^0.2.0",
+    "moleculer-prometheus": "^0.2.0",
     "moleculer-web": "^0.8.1"
   },
   "devDependencies": {

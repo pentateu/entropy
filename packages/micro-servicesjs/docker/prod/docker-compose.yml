@@ -54,7 +54,6 @@ services:
     #   - elasticsearch
 
   # Kafka
-
   kafka:
     image: landoop/fast-data-dev
     expose:
@@ -67,9 +66,9 @@ services:
     ports:
       - "3030:3030"
       - "9092:9092"
-      - "8081:8081"
-      - "8082:8082"
-      - "8083:8083"
+      - "9081:8081"
+      - "9082:8082"
+      - "9083:8083"
       - "2181:2181"
     labels:
       - "traefik.enable=true"   
@@ -78,13 +77,66 @@ services:
       - "traefik.kafkabroker.backend=kafkabroker"
       - "traefik.kafkabroker.port=9092"
       - "traefik.schemaregistry.backend=schemaregistry"
-      - "traefik.schemaregistry.port=8081"
+      - "traefik.schemaregistry.port=9081"
       - "traefik.kafkarest.backend=kafkarest"
-      - "traefik.kafkarest.port=8082"
+      - "traefik.kafkarest.port=9082"
       - "traefik.kafkaconnect.backend=kafkaconnect"
-      - "traefik.kafkaconnect.port=8083"
+      - "traefik.kafkaconnect.port=9083"
       - "traefik.zookeeper.backend=zookeeper"
       - "traefik.zookeeper.port=2181"
+
+  # prometheus 
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.backend=prometheus"
+      - "traefik.port=9090"
+
+  # jaeger components
+  jaeger-collector:
+    image: jaegertracing/jaeger-collector
+    command: ["--cassandra.keyspace=jaeger_v1_dc1", "--cassandra.servers=cassandra", "--collector.zipkin.http-port=9411"]
+    ports:
+      - "14269"
+      - "14268:14268"
+      - "14267"
+      - "9411:9411"
+    restart: on-failure
+    depends_on:
+      - cassandra-schema
+
+  jaeger-query:
+    image: jaegertracing/jaeger-query
+    command: ["--cassandra.keyspace=jaeger_v1_dc1", "--cassandra.servers=cassandra"]
+    ports:
+      - "16686:16686"
+      - "16687"
+    restart: on-failure
+    depends_on:
+      - cassandra-schema
+
+  jaeger-agent:
+    image: jaegertracing/jaeger-agent
+    command: ["--collector.host-port=jaeger-collector:14267"]
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+    restart: on-failure
+    depends_on:
+      - jaeger-collector
+
+  cassandra:
+    image: cassandra:3.9
+
+  cassandra-schema:
+    image: jaegertracing/jaeger-cassandra-schema
+    depends_on:
+      - cassandra
 
   # E2E Testing (API)
   api-tests:
@@ -134,6 +186,7 @@ services:
     environment:
       LOGLEVEL: debug
       PORT: 3050
+      PROMETHEUS_PORT: 3060
 
     working_dir: /src
     volumes:
@@ -145,10 +198,12 @@ services:
       - nats
       - mongo
       - redis
+      - jaeger-collector
     depends_on:
       - nats
       - mongo
       - redis
+      - jaeger-collector
     labels:
       - "traefik.enable=true"   
       - "traefik.backend=api"
@@ -159,9 +214,12 @@ services:
     build:
       context: ./../..
     image: node:10-alpine
+    ports:
+      - "3060:3060"
     env_file: env
     environment:
       LOGLEVEL: debug
+      PROMETHEUS_PORT: 3060
 
     working_dir: /src
     volumes:
@@ -170,11 +228,13 @@ services:
     command: /bin/sh -c "npm install && npm run start-core"
     
     links:
+      - jaeger-collector
       - nats
       - mongo
       - redis
       - kafka
     depends_on:
+      - jaeger-collector
       - nats
       - mongo
       - redis
