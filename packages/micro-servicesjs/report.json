@@ -1,0 +1,43 @@
+{
+  "title": "just-api",
+  "files": [
+    "/Users/rafael/Dev/closure/mono-repo/packages/micro-servicesjs/test/e2e/graphql-test.yml"
+  ],
+  "passedSuitesCount": 0,
+  "skippedSuitesCount": 0,
+  "failedSuitesCount": 1,
+  "failedTestsCount": 1,
+  "passedTestsCount": 0,
+  "skippedTestsCount": 0,
+  "duration": 5044,
+  "suites": [
+    {
+      "location": "/Users/rafael/Dev/closure/mono-repo/packages/micro-servicesjs/test/e2e/graphql-test.yml",
+      "name": "Graphql API",
+      "status": "fail",
+      "tests": [
+        {
+          "suite": "/Users/rafael/Dev/closure/mono-repo/packages/micro-servicesjs/test/e2e/graphql-test.yml",
+          "name": "Basic moleculer setup - using graphql.health",
+          "duration": 5012,
+          "status": "fail",
+          "error": {
+            "errno": "ENOTFOUND",
+            "code": "ENOTFOUND",
+            "syscall": "getaddrinfo",
+            "hostname": "api.local",
+            "host": "api.local",
+            "port": "3050",
+            "name": "Error",
+            "message": "getaddrinfo ENOTFOUND api.local api.local:3050",
+            "stack": "Error: getaddrinfo ENOTFOUND api.local api.local:3050\n    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:56:26)"
+          }
+        }
+      ],
+      "passedTests": 0,
+      "skippedTests": 0,
+      "failedTests": 1,
+      "error": null
+    }
+  ]
+}

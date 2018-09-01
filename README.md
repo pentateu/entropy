@@ -1,10 +1,10 @@
 # entropy
-Experiment in creating a full stack using clojure script, Kafka, CQRS, react native and react
+Experiment in creating a full stack using clojure script, Kafka, CQRS, ELK Stack for logs, react native and react all runing on Kunernets.
 
 # Goals
 
 ## Fullstack Development Workflow 
-(UI -> API -> microservices -> Functional Data Flows (Event Processing -> Agregates) -> Event Store (Kafka) -> Agregaates store (Mongo and ElasticSearch) -> Generic Cloud Infra ( Kubernet ) -> Dry INfra as Code (Terraform)
+(UI -> API -> microservices -> Functional Data Flows (Event Processing -> Agregates) -> Event Store (Kafka) -> Agregaates store (Mongo and ElasticSearch) -> Generic Cloud Infra ( Kubernet ) -> Dry INfra as Code (Terraform) -> ELK for Logs.
 
 ## Testable Development workflow
 Whole stack testable at the unit level and integrated up to any level.

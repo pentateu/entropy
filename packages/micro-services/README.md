@@ -12,6 +12,8 @@
     1) Make the config service in a way that can be used when a service is bootstraping to get NATS, REDIS and other setting
     2) Make the service completely independent and always using nthe config service..
     3) think about fall back.. when config service is not available.
+    4) Be able to change debug level info.. and apply to running services.
+    5) defihne a simple patter where the services subscribe to configuration changes.. and it receives apply thej.. using moleculer events.
 4) moleculer
     1) Cache
     2) try other transporters (p2P for example)
@@ -26,6 +28,13 @@
     1)  Add rollback and retry scenarios
     2)  hook it up with jaeger and the mangemnt UI
 10) Kubernets Infra
+    1) Minikube -> app to run kubernets locally  https://github.com/kubernetes/minikube
+    ```
+    brew cask install minikube
+    # after install 
+    # start with
+    minikube start
+    ```
 11) Deployment Unit
     1)  Mapping of which moleculer services are part of the deployment
 12) Encryption service
