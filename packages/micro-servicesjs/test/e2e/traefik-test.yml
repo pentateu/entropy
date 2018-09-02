@@ -3,13 +3,13 @@ meta:
 configuration:
   scheme: http
   host: traefik
-  port: 3001
+  port: 8080
   base_path: /
     
 specs:
   - name: traefik UI
     request:
-      path: /dashboard/status
+      path: /dashboard/
       method: get
     response:
       status_code: 200

@@ -2,7 +2,7 @@ meta:
   name: Services Health
 configuration:
   scheme: http
-  host: api
+  host: api-service
   port: 3050
   base_path: /api
 

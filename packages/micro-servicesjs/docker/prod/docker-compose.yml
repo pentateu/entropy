@@ -86,14 +86,23 @@ services:
       - "traefik.zookeeper.port=2181"
 
   # prometheus 
-  # prometheus:
-  #   image: prom/prometheus
-  #   ports:
-  #     - "9090:9090"
-  #   labels:
-  #     - "traefik.enable=true"   
-  #     - "traefik.backend=prometheus"
-  #     - "traefik.port=9090"
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - .:/project_config     
+    command: [ "--config.file=/project_config/prometheus.yml", "--storage.tsdb.path=/prometheus", "--web.console.libraries=/usr/share/prometheus/console_libraries", "--web.console.templates=/usr/share/prometheus/consoles" ]
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.backend=prometheus"
+      - "traefik.port=9090"
+    links:
+      - api-service
+      - core-service
+    depends_on:
+      - api-service
+      - core-service
 
   # jaeger components
   jaeger-collector:
@@ -159,12 +168,12 @@ services:
     command: /bin/sh -c "npm install && npm run api-tests"
   
     links:
-      - api
+      - api-service
       - kafka
       - traefik
       - jaeger-query
     depends_on:
-      - api
+      - api-service
       - kafka
       - traefik
       - jaeger-query
@@ -176,18 +185,15 @@ services:
       - "traefik.frontend.entryPoints=http"
       - "traefik.frontend.rule=PathPrefix:/"
 
-  # Load Testing
-
   
-  # Moleculer Config
-  api:
+  # Micro Services
+  api-service:
     build:
       context: ./../..
     image: node:10-alpine
-    expose:
-      - "3050"
     ports:
       - "3050:3050"
+      - "3060:3060"
     env_file: env
     environment:
       LOGLEVEL: debug
@@ -216,16 +222,16 @@ services:
       - "traefik.port=3050"
       - traefik.backend.healthcheck.path=/~node/health
 
-  core:
+  core-service:
     build:
       context: ./../..
     image: node:10-alpine
     ports:
-      - "3060:3060"
+      - "3061:3061"
     env_file: env
     environment:
       LOGLEVEL: debug
-      PROMETHEUS_PORT: 3060
+      PROMETHEUS_PORT: 3061
 
     working_dir: /src
     volumes:
