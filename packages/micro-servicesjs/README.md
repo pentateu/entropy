@@ -22,8 +22,10 @@ Create a service and point to Jaeger collector?
 
 # Next Steps
 1) Setup Jaeger and Prometheus
-    1) Prometheus tools for kubernets -> https://github.com/coreos/prometheus-operator
+    1) have jaeger and Prometheus working collection from all components they possible can
+    2) easy way to define and create new metrics.. add one from a sample service.
 2) Change monitor tests to k6
+    1) Check a HTML reporter for k6.. so replace the one for just-api
 3) implement a test/service with Kakfa to test it end ot end
 4) try to use the graphql plugin -> https://github.com/MerlinLabs/moleculer-graphql
 5) connect elk and see moleculer logs in there
@@ -38,4 +40,5 @@ Create a service and point to Jaeger collector?
         3) traefic, 
         4) KIbana and ELK stuff
         5) kubernets and etc
-9)  
+9)  Deploy on Kubernets
+    1)  Prometheus tools for kubernets -> https://github.com/coreos/prometheus-operator

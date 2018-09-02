@@ -1,0 +1,15 @@
+meta:
+  name: prometheus Infra Components
+configuration:
+  scheme: http
+  host: prometheus
+  port: 9090
+  base_path: /
+    
+specs:
+  - name: prometheus UI
+    request:
+      path: /graph
+      method: get
+    response:
+      status_code: 200
