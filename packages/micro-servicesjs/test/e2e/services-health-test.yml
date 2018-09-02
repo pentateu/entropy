@@ -1,0 +1,60 @@
+meta:
+  name: Services Health
+configuration:
+  scheme: http
+  host: api
+  port: 3050
+  base_path: /api
+
+specs:
+  - name: Node Health
+    request:
+      path: /~node/health
+      method: get
+    response:
+      status_code: 200
+      headers:
+        - name: content-type
+          value: !!js/regexp application/json     
+      # json_data:
+      #   - path: $.name
+      #     value: graphql
+
+  - name: graphql.health
+    request:
+      path: /graphql/health
+      method: get
+    response:
+      status_code: 200
+      headers:
+        - name: content-type
+          value: !!js/regexp application/json     
+      json_data:
+        - path: $.name
+          value: graphql
+
+  - name: jaeger.health
+    request:
+      path: /jaeger/health
+      method: get
+    response:
+      status_code: 200
+      headers:
+        - name: content-type
+          value: !!js/regexp application/json     
+      json_data:
+        - path: $.name
+          value: jaeger
+
+  - name: prometheus.health
+    request:
+      path: /prometheus/health
+      method: get
+    response:
+      status_code: 200
+      headers:
+        - name: content-type
+          value: !!js/regexp application/json     
+      json_data:
+        - path: $.name
+          value: prometheus

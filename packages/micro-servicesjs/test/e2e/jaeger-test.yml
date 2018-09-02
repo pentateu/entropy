@@ -1,0 +1,15 @@
+meta:
+  name: jaeger infra component
+configuration:
+  scheme: http
+  host: jaeger-query
+  port: 16686
+  base_path: /
+    
+specs:
+  - name: Jaeger UI
+    request:
+      path: /search
+      method: get
+    response:
+      status_code: 200

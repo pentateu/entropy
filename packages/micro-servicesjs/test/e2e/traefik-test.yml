@@ -1,0 +1,15 @@
+meta:
+  name: traefik Infra Components test
+configuration:
+  scheme: http
+  host: traefik
+  port: 3001
+  base_path: /
+    
+specs:
+  - name: traefik UI
+    request:
+      path: /dashboard/status
+      method: get
+    response:
+      status_code: 200

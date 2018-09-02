@@ -1,0 +1,15 @@
+meta:
+  name: Kafka Infra Component
+configuration:
+  scheme: http
+  host: kafka
+  port: 3030
+  base_path: /
+  
+specs:
+  - name: Kafka UI
+    request:
+      path: /
+      method: get
+    response:
+      status_code: 200

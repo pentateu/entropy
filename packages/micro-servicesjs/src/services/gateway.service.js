@@ -9,6 +9,8 @@ module.exports = {
 
         whitelist: [
           "$node.health",
+          "jaeger.health",
+          "prometheus.health",
           // Access any actions in 'graphql' service
           "graphql.*",
           // Access call only the `user' service
