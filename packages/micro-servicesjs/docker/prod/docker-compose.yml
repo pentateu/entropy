@@ -204,7 +204,7 @@ services:
     volumes:
       - ../..:/src
 
-    command: /bin/sh -c "npm install && npm run start-api"
+    command: /bin/sh -c "npm install node-rdkafka --force && npm run start-api"
     
     links:
       - nats
@@ -237,7 +237,7 @@ services:
     volumes:
       - ../..:/src
 
-    command: /bin/sh -c "npm install && npm run start-core"
+    command: /bin/sh -c "npm install node-rdkafka --force && npm run start-core"
     
     links:
       - jaeger-collector

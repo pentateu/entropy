@@ -15,10 +15,7 @@ specs:
       status_code: 200
       headers:
         - name: content-type
-          value: !!js/regexp application/json     
-      # json_data:
-      #   - path: $.name
-      #     value: graphql
+          value: !!js/regexp application/json
 
   - name: graphql.health
     request:
@@ -28,7 +25,7 @@ specs:
       status_code: 200
       headers:
         - name: content-type
-          value: !!js/regexp application/json     
+          value: !!js/regexp application/json
       json_data:
         - path: $.name
           value: graphql
@@ -50,6 +47,30 @@ specs:
     request:
       path: /prometheus/health
       method: get
+    response:
+      status_code: 200
+      headers:
+        - name: content-type
+          value: !!js/regexp application/json     
+      json_data:
+        - path: $.name
+          value: prometheus
+
+
+  - name: user.signUpRequested
+    request:
+      path: /user/signUpRequested
+      method: post
+      headers:
+        - name: content-type
+          value: application/json
+      payload:
+        body:
+          type: json
+          content:
+            name: John Snow
+            email: john@snow.com
+            password: xcvsp
     response:
       status_code: 200
       headers:

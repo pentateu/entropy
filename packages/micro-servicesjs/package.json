@@ -11,24 +11,27 @@
     "api-tests-watch": "nodemon -x 'just-api --reporter html /services/test/e2e/'"
   },
   "engines": {
-    "node": "9.x"
+    "node": "10.x"
   },
   "dependencies": {
     "ioredis": "^4.0.0",
+    "jaeger-client": "3.12.0",
     "jest": "^23.5.0",
+    "kafka-node": "^2.6.1",
+    "kafka-streams": "^4.5.0",
     "moleculer": "^0.13.2",
     "moleculer-jaeger": "^0.2.0",
     "moleculer-prometheus": "^0.2.0",
     "moleculer-web": "^0.8.1",
     "nats": "^1.0.1",
-    "jaeger-client": "3.12.0"
+    "node-rdkafka": "^2.4.1"
   },
   "devDependencies": {
     "concurrently": "^4.0.1",
     "http-server": "^0.11.1",
     "just-api": "^1.2.0",
+    "nodemon": "^1.18.4",
     "tough-cookie": "^2.3.0",
-    "url-parse": "^1.4.3",
-    "nodemon": "^1.18.4"
+    "url-parse": "^1.4.3"
   }
 }

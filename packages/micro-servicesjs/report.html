@@ -610,16 +610,21 @@ footer {
             <div class="just-api-top-header">
                 <div class="just-api-label">Just-API Report</div>
                 <div class="just-api-summary">
-                <span>0 Skipped, 0 Failed, 8 Passed ( 8 Tests )</span>
+                <span>0 Skipped, 1 Failed, 8 Passed ( 9 Tests )</span>
                 <br>
-                <span>0 Skipped, 0 Failed, 5 Passed ( 5 Suites )</span>
+                <span>0 Skipped, 1 Failed, 4 Passed ( 5 Suites )</span>
                 <br>
-                <span>Duration: 531ms</span>
+                <span>Duration: 1s</span>
                 <br>
-                <span>Sun, 02 Sep 2018 04:22:49 GMT</span>
+                <span>Mon, 03 Sep 2018 04:36:54 GMT</span>
                 </div>
             </div>
-            <ul id="report"><li class="suite"><h1 class="suite-name">/services/test/e2e/jaeger-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Jaeger UI <span class="duration">( 25ms )</span></h2></li><span class="suite-name-hidden">jaeger infra component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/kafka-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Kafka UI <span class="duration">( 5ms )</span></h2></li><span class="suite-name-hidden">Kafka Infra Component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/prometheus-test.yml</h1><ul><li class="test pass"><h2 class="test-name">prometheus UI <span class="duration">( 4ms )</span></h2></li><span class="suite-name-hidden">prometheus Infra Components</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/services-health-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Node Health <span class="duration">( 10ms )</span></h2></li><li class="test pass"><h2 class="test-name">graphql.health <span class="duration">( 23ms )</span></h2></li><li class="test pass"><h2 class="test-name">jaeger.health <span class="duration">( 27ms )</span></h2></li><li class="test pass"><h2 class="test-name">prometheus.health <span class="duration">( 25ms )</span></h2></li><span class="suite-name-hidden">Services Health</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/traefik-test.yml</h1><ul><li class="test pass"><h2 class="test-name">traefik UI <span class="duration">( 2ms )</span></h2></li><span class="suite-name-hidden">traefik Infra Components test</span></ul></li></ul>
+            <ul id="report"><li class="suite"><h1 class="suite-name">/services/test/e2e/jaeger-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Jaeger UI <span class="duration">( 22ms )</span></h2></li><span class="suite-name-hidden">jaeger infra component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/kafka-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Kafka UI <span class="duration">( 6ms )</span></h2></li><span class="suite-name-hidden">Kafka Infra Component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/prometheus-test.yml</h1><ul><li class="test pass"><h2 class="test-name">prometheus UI <span class="duration">( 6ms )</span></h2></li><span class="suite-name-hidden">prometheus Infra Components</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/services-health-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Node Health <span class="duration">( 20ms )</span></h2></li><li class="test pass"><h2 class="test-name">graphql.health <span class="duration">( 24ms )</span></h2></li><li class="test pass"><h2 class="test-name">jaeger.health <span class="duration">( 27ms )</span></h2></li><li class="test pass"><h2 class="test-name">prometheus.health <span class="duration">( 33ms )</span></h2></li><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">user.signUpRequested <span class="duration">( 251ms )</span></h2><pre class="error">ResponseStatusCodeDidNotMatchError: Expected status code: 200, Actual status code: 500 
+ request: POST http://api-service:3050/api/user/signUpRequested
+    at Spec._validateStatus (/services/node_modules/just-api/src/spec.js:666:19)
+    at Spec.validateResponse (/services/node_modules/just-api/src/spec.js:319:18)
+    at Spec.runAsTest (/services/node_modules/just-api/src/spec.js:124:24)
+    at process._tickCallback (internal/process/next_tick.js:68:7)</pre></li><span class="suite-name-hidden">Services Health</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/traefik-test.yml</h1><ul><li class="test pass"><h2 class="test-name">traefik UI <span class="duration">( 5ms )</span></h2></li><span class="suite-name-hidden">traefik Infra Components test</span></ul></li></ul>
         </div>
         <script>
         'use strict';
