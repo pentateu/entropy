@@ -12,12 +12,12 @@ const producerDefaultOptions = {
 module.exports = {
   settings: {
     kafka: {
-      zookeeperHost: "http://kafka:2181",
+      zookeeperHost: "http://kafka.prod.docker.localhost:2181",
 
       producerReadyTimeout: 3000, //3 seconds
 
       brokerOptions: {
-        "metadata.broker.list": "kafka:9092", //native client requires broker hosts to connect to
+        "metadata.broker.list": "kafka.prod.docker.localhost:9092", //native client requires broker hosts to connect to
 
         "enable.auto.commit": false,
         "auto.commit.interval.ms": 100,
@@ -117,16 +117,21 @@ module.exports = {
       return nativeConfig;
     },
 
-    connectKakfaStreams() {
+    async connectKakfaStreams() {
       this.logger.info(
         `[${
           this.name
         } kafka mixin onnectKakfaStreams()] Connecting to Kafka ...`
       );
       this.kafkaStreamsFactory = new KafkaStreams(this.kafkaNativeConfig());
-      this.outputStream = this.kafkaStreamsFactory.getKStream();
-      this.outputStream.to(this.topic);
+      this.stream = this.kafkaStreamsFactory.getKStream(this.topic);
+      await this.stream.start();
+      this.setupStream(this.stream);
+      this.stream.kafka.createTopic();
     },
+
+    //to be implemented by the service
+    setupStream(stream) {},
 
     async connectKafkaClient() {
       this.logger.info(
@@ -162,20 +167,14 @@ module.exports = {
       this.logger.debug(
         `[${
           this.name
-        } kafka mixin  storeEvent()] key: ${key} value: ${JSON.stringify(
+        } kafka mixin storeKafkaEvent()] key: ${key} value: ${JSON.stringify(
           value
         )}`
       );
-      await this.outputStream.start();
-      this.outputStream.writeToStream({
+      this.stream.writeToStream({
         key,
         value: { eventCreated: Date.now(), ...value }
       });
-
-      this.logger.debug(
-        "[${this.name} kafka mixin  storeEvent()] kafkaSend result: ",
-        result
-      );
     }
   },
 

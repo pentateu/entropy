@@ -46,10 +46,10 @@ module.exports = {
     // Maps the event types (signUpRequested, signUpRequestAccepted, signUpRequestRejected ...)
     // to the methods that will handle them.
     // passes down a stream that is already filtered (by key to the fine grained event) and mapped to the actual value.
-    createConsumers() {
+    setupStream(stream) {
       this.logger.debug(`[user createConsumers()] ...`);
 
-      const stream = this.kafkaStreamsFactory.getKStream(this.topic);
+      //const stream = this.kafkaStreamsFactory.getKStream(this.topic);
       stream
         .filter(({ key }) => key === "signUpRequested")
         .map(({ value }) => value)

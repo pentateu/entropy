@@ -1,57 +1,82 @@
 version: "3.0"
 
+volumes:
+  node_modules:
+
 services:
-
-
   # ELK Stack Config
-  # elasticsearch:
-  #   env_file: env
-  #   build:
-  #     context: ../elasticsearch/
-  #     args:
-  #       ELK_VERSION: 6.4.0
-  #   volumes:
-  #     - ../elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-  #   ports:
-  #     - "9200:9200"
-  #     - "9300:9300"
-  #   environment:
-  #     ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-  #   networks:
-  #     - elk
-
-  # logstash:
-  #   env_file: env
-  #   build:
-  #     context: ../logstash/
-  #     args:
-  #       ELK_VERSION: 6.4.0
-  #   volumes:
-  #     -  ../logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-  #     -  ../logstash/pipeline:/usr/share/logstash/pipeline:ro
-  #   ports:
-  #     - "5000:5000"
-  #   environment:
-  #     LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-  #   networks:
-  #     - elk
-  #   depends_on:
-  #     - elasticsearch
-
-  # kibana:
-    # env_file: env
-    # build:
-    #   context: ../kibana/
-    #   args:
-    #     ELK_VERSION: 6.4.0
-    # volumes:
-    #   -  ../kibana/config/:/usr/share/kibana/config:ro
-    # ports:
-    #   - "5601:5601"
+  kibana:
+    env_file: env
+    build:
+      context: ../kibana/
+      args:
+        ELK_VERSION: 6.4.0
+    volumes:
+      -  ../kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - "5601:5601"
     # networks:
     #   - elk
-    # depends_on:
-    #   - elasticsearch
+    depends_on:
+      - elasticsearch
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.backend=kibana"
+      - "traefik.port=5601"
+
+  elasticsearch:
+    env_file: env
+    build:
+      context: ../elasticsearch/
+      args:
+        ELK_VERSION: 6.4.0
+    volumes:
+      - ../elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    # networks:
+    #   - elk
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.elasticsearch.backend=elasticsearch"
+      - "traefik.elasticsearch.port=9200" 
+      - "traefik.elasticsearch2.backend=elasticsearch2"
+      - "traefik.elasticsearch2.port=9300" 
+
+  logstash:
+    env_file: env
+    build:
+      context: ../logstash/
+      args:
+        ELK_VERSION: 6.4.0
+    volumes:
+      -  ../logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      -  ../logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5000:5000"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    # networks:
+    #   - elk
+    depends_on:
+      - elasticsearch
+    labels:
+      - "traefik.enable=false"
+
+  logspout:
+    image: dmacedo/logspout-logstash
+    restart: on-failure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      ROUTE_URIS: logstash+tcp://logstash:5000
+    links:
+      - logstash
+    depends_on:
+       - logstash
 
   # Kafka
   kafka:
@@ -126,6 +151,10 @@ services:
     restart: on-failure
     depends_on:
       - cassandra-schema
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.backend=jaeger"
+      - "traefik.port=16686"
 
   jaeger-agent:
     image: jaegertracing/jaeger-agent
@@ -185,7 +214,6 @@ services:
       - "traefik.frontend.entryPoints=http"
       - "traefik.frontend.rule=PathPrefix:/"
 
-  
   # Micro Services
   api-service:
     build:
@@ -204,7 +232,7 @@ services:
     volumes:
       - ../..:/src
 
-    command: /bin/sh -c "npm install node-rdkafka --force && npm run start-api"
+    command: /bin/sh -c "npm run start-api"
     
     links:
       - nats
@@ -225,7 +253,7 @@ services:
   core-service:
     build:
       context: ./../..
-    image: node:10-alpine
+    image: node:10
     ports:
       - "3061:3061"
     env_file: env
@@ -236,8 +264,9 @@ services:
     working_dir: /src
     volumes:
       - ../..:/src
+      - node_modules:/src/node_modules
 
-    command: /bin/sh -c "npm install node-rdkafka --force && npm run start-core"
+    command: /bin/sh -c "npm install && npm run start-core"
     
     links:
       - jaeger-collector
@@ -272,6 +301,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
 
-networks:
-  elk:
-    driver: bridge
+# networks:
+#   elk:
+#     driver: bridge
