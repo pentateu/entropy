@@ -610,21 +610,21 @@ footer {
             <div class="just-api-top-header">
                 <div class="just-api-label">Just-API Report</div>
                 <div class="just-api-summary">
-                <span>0 Skipped, 5 Failed, 4 Passed ( 9 Tests )</span>
+                <span>0 Skipped, 1 Failed, 8 Passed ( 9 Tests )</span>
                 <br>
                 <span>0 Skipped, 1 Failed, 4 Passed ( 5 Suites )</span>
                 <br>
-                <span>Duration: 1s</span>
+                <span>Duration: 2.9s</span>
                 <br>
-                <span>Tue, 04 Sep 2018 04:17:17 GMT</span>
+                <span>Tue, 04 Sep 2018 04:34:33 GMT</span>
                 </div>
             </div>
-            <ul id="report"><li class="suite"><h1 class="suite-name">/services/test/e2e/jaeger-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Jaeger UI <span class="duration">( 64ms )</span></h2></li><span class="suite-name-hidden">jaeger infra component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/kafka-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Kafka UI <span class="duration">( 26ms )</span></h2></li><span class="suite-name-hidden">Kafka Infra Component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/prometheus-test.yml</h1><ul><li class="test pass"><h2 class="test-name">prometheus UI <span class="duration">( 32ms )</span></h2></li><span class="suite-name-hidden">prometheus Infra Components</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/services-health-test.yml</h1><ul><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">Node Health <span class="duration">( 3ms )</span></h2><pre class="error">Error: connect ECONNREFUSED 192.168.208.12:3050
-    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1161:14)</pre></li><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">graphql.health <span class="duration">( 3ms )</span></h2><pre class="error">Error: connect ECONNREFUSED 192.168.208.12:3050
-    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1161:14)</pre></li><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">jaeger.health <span class="duration">( 3ms )</span></h2><pre class="error">Error: connect ECONNREFUSED 192.168.208.12:3050
-    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1161:14)</pre></li><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">prometheus.health <span class="duration">( 3ms )</span></h2><pre class="error">Error: connect ECONNREFUSED 192.168.208.12:3050
-    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1161:14)</pre></li><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">user.signUpRequested <span class="duration">( 6ms )</span></h2><pre class="error">Error: connect ECONNREFUSED 192.168.208.12:3050
-    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1161:14)</pre></li><span class="suite-name-hidden">Services Health</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/traefik-test.yml</h1><ul><li class="test pass"><h2 class="test-name">traefik UI <span class="duration">( 7ms )</span></h2></li><span class="suite-name-hidden">traefik Infra Components test</span></ul></li></ul>
+            <ul id="report"><li class="suite"><h1 class="suite-name">/services/test/e2e/jaeger-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Jaeger UI <span class="duration">( 279ms )</span></h2></li><span class="suite-name-hidden">jaeger infra component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/kafka-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Kafka UI <span class="duration">( 60ms )</span></h2></li><span class="suite-name-hidden">Kafka Infra Component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/prometheus-test.yml</h1><ul><li class="test pass"><h2 class="test-name">prometheus UI <span class="duration">( 64ms )</span></h2></li><span class="suite-name-hidden">prometheus Infra Components</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/services-health-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Node Health <span class="duration">( 103ms )</span></h2></li><li class="test pass"><h2 class="test-name">graphql.health <span class="duration">( 107ms )</span></h2></li><li class="test pass"><h2 class="test-name">jaeger.health <span class="duration">( 81ms )</span></h2></li><li class="test pass"><h2 class="test-name">prometheus.health <span class="duration">( 82ms )</span></h2></li><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">user.signUpRequested <span class="duration">( 550ms )</span></h2><pre class="error">ResponseHeaderValueDidNotMatchError: Expected value for header: content-type is /application\/json/, Actual value: [couldn't find it in response headers] 
+ request: POST http://api-service:3050/api/user/signUpRequested
+    at Spec._validateHeaders (/services/node_modules/just-api/src/spec.js:687:23)
+    at Spec.validateResponse (/services/node_modules/just-api/src/spec.js:324:18)
+    at Spec.runAsTest (/services/node_modules/just-api/src/spec.js:124:24)
+    at process._tickCallback (internal/process/next_tick.js:68:7)</pre></li><span class="suite-name-hidden">Services Health</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/traefik-test.yml</h1><ul><li class="test pass"><h2 class="test-name">traefik UI <span class="duration">( 67ms )</span></h2></li><span class="suite-name-hidden">traefik Infra Components test</span></ul></li></ul>
         </div>
         <script>
         'use strict';
