@@ -42,9 +42,17 @@ Tools to create your own 10X team!
 
 
 ### Logstash
+#### Issues:
+
+ - Logstash initialization is very slow.. so services like nats and the nats-metrics that try to send logs directly to logstash can't start.. since sometimes logstash takes up to 2 minutes to start.
+ - This is not a must.. since these logs are also being picked up by logspout
+This is the setup tried, but failed due to the logstash slow start-up
 
 NATS -> (gnatsd -r syslog://logstash:5001) -> Logstash -> (No filters) ->  elasticsearch:9200
 Docker logging -> syslog://logstash:5000 -> Logstash -> (Filter: Ignore Logstash Service) -> elasticsearch:9200
+
+#### Alternatives
+Logstash is resource hungry and there are alternatives worth considering. 
 
 ### Prometheus
 
@@ -52,6 +60,7 @@ Docker logging -> syslog://logstash:5000 -> Logstash -> (Filter: Ignore Logstash
 ### Graphana setup
 References:
 - (https://github.com/nats-io/prometheus-nats-exporter/blob/master/walkthrough/README.md)
+- (https://www.hawkular.org/blog/2017/06/26/opentracing-appmetrics.html)
 
 #### NATS Metrics
 

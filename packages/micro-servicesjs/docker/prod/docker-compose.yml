@@ -54,8 +54,9 @@ services:
       args:
         ELK_VERSION: 6.4.0
     volumes:
-      -  ../logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
-      -  ../logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - ../logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ../logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - /dev/urandom:/dev/random
     ports:
       - "5000:5000"
       - "5001:5001"
@@ -182,8 +183,6 @@ services:
 
   # E2E Testing (API)
   api-tests:
-    build:
-      context: ../..
     image: node:10-alpine
     expose:
       - "3080"
@@ -220,8 +219,6 @@ services:
 
   # Micro Services
   api-service:
-    build:
-      context: ./../..
     image: node:10-alpine
     ports:
       - "3050:3050"
@@ -255,8 +252,6 @@ services:
       - traefik.backend.healthcheck.path=/~node/health
 
   core-service:
-    build:
-      context: ./../..
     image: node:10
     ports:
       - "3061:3061"
@@ -295,13 +290,11 @@ services:
       context: ../prometheus-nats-exporter/
     ports:
       - "5050:7777"
-    command: -varz -connz -routez -subz -r tcp://logstash:5001 "http://nats:8222"
+    command: -varz -connz -routez -subz http://nats:8222
     links:
       - nats
-      - logstash
     depends_on:
        - nats
-       - logstash
     labels:
       - "traefik.enable=true"   
       - "traefik.backend=nats-metrics"
@@ -313,12 +306,7 @@ services:
       - "4222:4222"
       - "8222:8222"
       - "6222:6222"
-    command: -r tcp://logstash:5001
-    links:
-      - logstash
-    depends_on:
-       - logstash
-
+      
   traefik:
     image: traefik
     command: --web --docker --docker.domain=docker.localhost --logLevel=INFO --docker.exposedbydefault=false
