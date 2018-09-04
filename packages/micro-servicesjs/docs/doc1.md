@@ -26,6 +26,7 @@ Tools to create your own 10X team!
 - **kafka**   - Fast Data Dashboard for Kafka - (kafka.prod.docker.localhost:3030)
 - **jaeger**  - Jaeger is the mnicroservices tracing tool - (http://jaeger-query.prod.docker.localhost:16686/trace/5254eb4160e44bc3)
 - **prometheus** - Metrics- (http://www.prometheus.prod.docker.localhost:9090/)
+- **grafana** - timeseries dashboards - (http://grafana.prod.docker.localhost:3000)
 
 
 
@@ -33,13 +34,17 @@ Tools to create your own 10X team!
 ## Setup
 
 ### NATS
-- Logs: Send logs directly to log stash using nthe -r parameter: 
-    - `nats -r syslog://logstash:5001`
+- Logs: 
+First attempt was to send logs directly to log stash using nthe -r parameter: 
+ `nats -r syslog://logstash:5001`
+But issues with logstach initialization time (very slow +/- 3 mins) would cause NATS to fail loading.
+So for now logging is done using docker socket -> logspout -> logstash
 
 - Metrics: 
-    - Exposed to **prometheus** on port 5050 -> *prometheus-nats-exporter* is a tool written in Go to expose NATS metrics as a prometheus endpoint - (https://github.com/nats-io/prometheus-nats-exporter)
+    - Exposed to **prometheus** on port 7777 -> *prometheus-nats-exporter* is a tool written in Go to expose NATS metrics as a prometheus endpoint - (https://github.com/nats-io/prometheus-nats-exporter)
     - prometheus-nats-exporte is deployed as a docker container idependently of the nats container.
-
+    - Usefull metrics are:
+        - xxx
 
 ### Logstash
 #### Issues:
@@ -58,6 +63,10 @@ Logstash is resource hungry and there are alternatives worth considering.
 
 
 ### Graphana setup
+(http://grafana.prod.docker.localhost:3000)
+
+
+
 References:
 - (https://github.com/nats-io/prometheus-nats-exporter/blob/master/walkthrough/README.md)
 - (https://www.hawkular.org/blog/2017/06/26/opentracing-appmetrics.html)

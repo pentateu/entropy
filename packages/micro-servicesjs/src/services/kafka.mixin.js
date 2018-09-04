@@ -127,7 +127,6 @@ module.exports = {
       this.stream = this.kafkaStreamsFactory.getKStream(this.topic);
       await this.stream.start();
       this.setupStream(this.stream);
-      this.stream.kafka.createTopic();
     },
 
     //to be implemented by the service

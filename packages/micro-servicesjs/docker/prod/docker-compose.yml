@@ -2,9 +2,9 @@ version: "3.0"
 
 volumes:
   node_modules:
-
+  grafana-storage:
+  
 services:
-  # ELK Stack Config
   kibana:
     env_file: env
     build:
@@ -15,8 +15,7 @@ services:
       -  ../kibana/config/:/usr/share/kibana/config:ro
     ports:
       - "5601:5601"
-    # networks:
-    #   - elk
+    restart: on-failure
     depends_on:
       - elasticsearch
     labels:
@@ -38,8 +37,7 @@ services:
       - "9300:9300"
     environment:
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-    # networks:
-    #   - elk
+    restart: on-failure
     labels:
       - "traefik.enable=true"   
       - "traefik.elasticsearch.backend=elasticsearch"
@@ -64,8 +62,7 @@ services:
       - 5001
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-    # networks:
-    #   - elk
+    restart: on-failure
     depends_on:
       - elasticsearch
     labels:
@@ -78,14 +75,15 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       ROUTE_URIS: logstash+tcp://logstash:5000
+    restart: on-failure
     links:
       - logstash
     depends_on:
        - logstash
 
-  # Kafka
   kafka:
     image: landoop/fast-data-dev
+    restart: on-failure
     expose:
       - "3030"
       - "9092"
@@ -115,7 +113,6 @@ services:
       - "traefik.zookeeper.backend=zookeeper"
       - "traefik.zookeeper.port=2181"
 
-  # prometheus 
   prometheus:
     image: prom/prometheus
     ports:
@@ -123,6 +120,7 @@ services:
     volumes:
       - .:/project_config     
     command: [ "--config.file=/project_config/prometheus.yml", "--storage.tsdb.path=/prometheus", "--web.console.libraries=/usr/share/prometheus/console_libraries", "--web.console.templates=/usr/share/prometheus/consoles" ]
+    restart: on-failure
     labels:
       - "traefik.enable=true"   
       - "traefik.backend=prometheus"
@@ -130,9 +128,24 @@ services:
     links:
       - api-service
       - core-service
-    depends_on:
-      - api-service
-      - core-service
+      - nats-metrics
+      - jaeger-collector
+      - jaeger-query
+      - jaeger-agent
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes: 
+      - grafana-storage:/var/lib/grafana
+    environment: 
+      GF_INSTALL_PLUGINS: grafana-clock-panel,grafana-simple-json-datasource
+    restart: on-failure
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.backend=grafana"
+      - "traefik.port=3000"
 
   # jaeger components
   jaeger-collector:
@@ -174,12 +187,70 @@ services:
       - jaeger-collector
 
   cassandra:
+    restart: on-failure
     image: cassandra:3.9
 
   cassandra-schema:
     image: jaegertracing/jaeger-cassandra-schema
     depends_on:
       - cassandra
+
+  redis:
+    restart: on-failure
+    image: redis:alpine
+
+  mongo:
+    restart: on-failure
+    image: mongo
+
+  nats-metrics:
+    build:
+      context: ../prometheus-nats-exporter/
+    command: -varz -connz -routez -subz http://nats:8222
+    links:
+      - nats
+    restart: on-failure
+    depends_on:
+       - nats
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.backend=nats-metrics"
+      - "traefik.port=7777"
+
+  nats:
+    image: nats
+    restart: on-failure
+    ports:
+      - 4222
+      - 8222
+      - 6222
+      
+  traefik:
+    image: traefik
+    command: --web --docker --docker.domain=docker.localhost --logLevel=INFO --docker.exposedbydefault=false
+    ports:
+      - "3001:8080"
+    restart: on-failure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+
+  website:
+    image: node:10-alpine
+    ports:
+      - "3010:3000"
+      - "35729:35729"
+    working_dir: /src/website
+    volumes:
+      - ../..:/src
+    command: /bin/sh -c "npm run start"
+    restart: on-failure
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.website.backend=website"
+      - "traefik.website.port=3010"
+      - "traefik.websiteLiveReload.backend=websiteLiveReload"
+      - "traefik.websiteLiveReload.port=35729"
 
   # E2E Testing (API)
   api-tests:
@@ -192,13 +263,10 @@ services:
     environment:
       LOGLEVEL: debug
       PORT: 3080
-
     working_dir: /services
     volumes:
       - ../..:/services
-
     command: /bin/sh -c "npm install && npm run api-tests"
-  
     links:
       - api-service
       - kafka
@@ -209,7 +277,7 @@ services:
       - kafka
       - traefik
       - jaeger-query
-
+    restart: on-failure
     labels:
       - "traefik.enable=true"  
       - "traefik.port=3080"
@@ -278,60 +346,3 @@ services:
       - kafka
     labels:
       - "traefik.enable=false"
-  
-  redis:
-    image: redis:alpine
-
-  mongo:
-    image: mongo
-
-  nats-metrics:
-    build:
-      context: ../prometheus-nats-exporter/
-    ports:
-      - "5050:7777"
-    command: -varz -connz -routez -subz http://nats:8222
-    links:
-      - nats
-    depends_on:
-       - nats
-    labels:
-      - "traefik.enable=true"   
-      - "traefik.backend=nats-metrics"
-      - "traefik.port=5050"
-
-  nats:
-    image: nats
-    ports:
-      - "4222:4222"
-      - "8222:8222"
-      - "6222:6222"
-      
-  traefik:
-    image: traefik
-    command: --web --docker --docker.domain=docker.localhost --logLevel=INFO --docker.exposedbydefault=false
-    ports:
-      - "3001:8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /dev/null:/traefik.toml
-
-  website:
-    image: node:10-alpine
-    ports:
-      - "3000:3000"
-      - "35729:35729"
-    working_dir: /src/website
-    volumes:
-      - ../..:/src
-    command: /bin/sh -c "npm run start"
-    labels:
-      - "traefik.enable=true"   
-      - "traefik.website.backend=website"
-      - "traefik.website.port=3000"
-      - "traefik.websiteLiveReload.backend=websiteLiveReload"
-      - "traefik.websiteLiveReload.port=35729"
-
-# networks:
-#   elk:
-#     driver: bridge
