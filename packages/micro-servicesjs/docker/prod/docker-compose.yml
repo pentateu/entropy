@@ -321,25 +321,20 @@ services:
 
   core-service:
     image: node:10
-    ports:
-      - "3061:3061"
     env_file: env
     environment:
       LOGLEVEL: debug
-      PROMETHEUS_PORT: 3061
     working_dir: /src
     volumes:
       - ../..:/src
       - node_modules:/src/node_modules
     command: /bin/sh -c "npm install && npm run start-core"
     links:
-      - jaeger-collector
       - nats
       - mongo
       - redis
       - kafka
     depends_on:
-      - jaeger-collector
       - nats
       - mongo
       - redis

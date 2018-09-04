@@ -65,6 +65,11 @@ Logstash is resource hungry and there are alternatives worth considering.
 ### Graphana setup
 (http://grafana.prod.docker.localhost:3000)
 
+Dashboards:
+ - Jaeger Collector -> (https://grafana.com/dashboards/6394)
+ - NATS -> (https://github.com/nats-io/prometheus-nats-exporter/tree/master/walkthrough)
+ - Moleculer -> (https://github.com/moleculerjs/moleculer-metrics/tree/master/packages/moleculer-prometheus/grafana-dashboards)
+
 
 
 References:

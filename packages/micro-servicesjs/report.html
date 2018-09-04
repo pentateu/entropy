@@ -610,21 +610,22 @@ footer {
             <div class="just-api-top-header">
                 <div class="just-api-label">Just-API Report</div>
                 <div class="just-api-summary">
-                <span>0 Skipped, 1 Failed, 8 Passed ( 9 Tests )</span>
+                <span>0 Skipped, 2 Failed, 7 Passed ( 9 Tests )</span>
                 <br>
-                <span>0 Skipped, 1 Failed, 4 Passed ( 5 Suites )</span>
+                <span>0 Skipped, 2 Failed, 3 Passed ( 5 Suites )</span>
                 <br>
-                <span>Duration: 3.2s</span>
+                <span>Duration: 2.3s</span>
                 <br>
-                <span>Tue, 04 Sep 2018 08:31:13 GMT</span>
+                <span>Tue, 04 Sep 2018 09:01:49 GMT</span>
                 </div>
             </div>
-            <ul id="report"><li class="suite"><h1 class="suite-name">/services/test/e2e/jaeger-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Jaeger UI <span class="duration">( 117ms )</span></h2></li><span class="suite-name-hidden">jaeger infra component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/kafka-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Kafka UI <span class="duration">( 37ms )</span></h2></li><span class="suite-name-hidden">Kafka Infra Component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/prometheus-test.yml</h1><ul><li class="test pass"><h2 class="test-name">prometheus UI <span class="duration">( 26ms )</span></h2></li><span class="suite-name-hidden">prometheus Infra Components</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/services-health-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Node Health <span class="duration">( 80ms )</span></h2></li><li class="test pass"><h2 class="test-name">graphql.health <span class="duration">( 52ms )</span></h2></li><li class="test pass"><h2 class="test-name">jaeger.health <span class="duration">( 75ms )</span></h2></li><li class="test pass"><h2 class="test-name">prometheus.health <span class="duration">( 16ms )</span></h2></li><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">user.signUpRequested <span class="duration">( 361ms )</span></h2><pre class="error">ResponseHeaderValueDidNotMatchError: Expected value for header: content-type is /application\/json/, Actual value: [couldn't find it in response headers] 
+            <ul id="report"><li class="suite"><h1 class="suite-name">/services/test/e2e/jaeger-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Jaeger UI <span class="duration">( 159ms )</span></h2></li><span class="suite-name-hidden">jaeger infra component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/kafka-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Kafka UI <span class="duration">( 54ms )</span></h2></li><span class="suite-name-hidden">Kafka Infra Component</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/prometheus-test.yml</h1><ul><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">prometheus UI <span class="duration">( 135ms )</span></h2><pre class="error">Error: getaddrinfo ENOTFOUND prometheus prometheus:9090
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:57:26)</pre></li><span class="suite-name-hidden">prometheus Infra Components</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/services-health-test.yml</h1><ul><li class="test pass"><h2 class="test-name">Node Health <span class="duration">( 82ms )</span></h2></li><li class="test pass"><h2 class="test-name">graphql.health <span class="duration">( 130ms )</span></h2></li><li class="test pass"><h2 class="test-name">jaeger.health <span class="duration">( 71ms )</span></h2></li><li class="test pass"><h2 class="test-name">prometheus.health <span class="duration">( 86ms )</span></h2></li><li class="test fail"><h2 class="test-name" onclick="toggleTestDetailedView(this)">user.signUpRequested <span class="duration">( 319ms )</span></h2><pre class="error">ResponseHeaderValueDidNotMatchError: Expected value for header: content-type is /application\/json/, Actual value: [couldn't find it in response headers] 
  request: POST http://api-service:3050/api/user/signUpRequested
     at Spec._validateHeaders (/services/node_modules/just-api/src/spec.js:687:23)
     at Spec.validateResponse (/services/node_modules/just-api/src/spec.js:324:18)
     at Spec.runAsTest (/services/node_modules/just-api/src/spec.js:124:24)
-    at process._tickCallback (internal/process/next_tick.js:68:7)</pre></li><span class="suite-name-hidden">Services Health</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/traefik-test.yml</h1><ul><li class="test pass"><h2 class="test-name">traefik UI <span class="duration">( 13ms )</span></h2></li><span class="suite-name-hidden">traefik Infra Components test</span></ul></li></ul>
+    at process._tickCallback (internal/process/next_tick.js:68:7)</pre></li><span class="suite-name-hidden">Services Health</span></ul></li><li class="suite"><h1 class="suite-name">/services/test/e2e/traefik-test.yml</h1><ul><li class="test pass"><h2 class="test-name">traefik UI <span class="duration">( 9ms )</span></h2></li><span class="suite-name-hidden">traefik Infra Components test</span></ul></li></ul>
         </div>
         <script>
         'use strict';

@@ -6,57 +6,52 @@ global:
   external_labels:
     monitor: 'nats'
 
-metric_relabel:
-  - action: replace
-    regex: jaeger_collector:(?:.+:)?[^:]+_by_svc:([^:]+)
-    replacement: $1
-    source_labels:
-    - __name__
-    target_label: service
-  - action: replace
-    regex: (jaeger_collector:(?:.+:)?[^:]+_by_svc):[^:]+
-    replacement: $1
-    source_labels:
-    - __name__
-    target_label: __name__
-  - action: replace
-    regex: jaeger_collector:([^:]+):((?:debug_)?(?:spans|traces)(?:_recd|_rejected|_saved)?(?:_by_svc)?)
-    replacement: $1
-    source_labels:
-    - __name__
-    target_label: format
-  - action: replace
-    regex: jaeger_collector:([^:]+):((?:debug_)?(?:spans|traces)(?:_recd|_rejected|_saved)?(?:_by_svc)?)
-    replacement: jaeger_collector:$2
-    source_labels:
-    - __name__
-    target_label: __name__
-  - regex: jaeger_collector:([^:]+)
-    replacement: jaeger_collector_$1
-    source_labels:
-    - __name__
-    target_label: __name__
-
 scrape_configs:
   - job_name: prometheus
     static_configs:
       - targets: ['localhost:9090']
-  - job_name: api-service
+  - job_name: moleculer
     static_configs:
       - targets: ['api-service:3060']
-  - job_name: core-service
-    static_configs:
-      - targets: ['core-service:3061']
   - job_name: nats
     static_configs:
       - targets: ['nats-metrics:7777']
-  - job_name: jaeger-collector
-    static_configs:
-      - targets: ['jaeger-collector:14268']
   - job_name: jaeger-agent
     static_configs:
       - targets: ['jaeger-agent:5778']
   - job_name: jaeger-query
     static_configs:
       - targets: ['jaeger-query:16686']
-      
+  - job_name: jaeger-collector
+    static_configs:
+      - targets: ['jaeger-collector:14268']
+    metric_relabel_configs:
+      - action: replace
+        regex: jaeger_collector:(?:.+:)?[^:]+_by_svc:([^:]+)
+        replacement: $1
+        source_labels:
+        - __name__
+        target_label: service
+      - action: replace
+        regex: (jaeger_collector:(?:.+:)?[^:]+_by_svc):[^:]+
+        replacement: $1
+        source_labels:
+        - __name__
+        target_label: __name__
+      - action: replace
+        regex: jaeger_collector:([^:]+):((?:debug_)?(?:spans|traces)(?:_recd|_rejected|_saved)?(?:_by_svc)?)
+        replacement: $1
+        source_labels:
+        - __name__
+        target_label: format
+      - action: replace
+        regex: jaeger_collector:([^:]+):((?:debug_)?(?:spans|traces)(?:_recd|_rejected|_saved)?(?:_by_svc)?)
+        replacement: jaeger_collector:$2
+        source_labels:
+        - __name__
+        target_label: __name__
+      - regex: jaeger_collector:([^:]+)
+        replacement: jaeger_collector_$1
+        source_labels:
+        - __name__
+        target_label: __name__
