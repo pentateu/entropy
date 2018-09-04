@@ -47,13 +47,22 @@ module.exports = {
     // to the methods that will handle them.
     // passes down a stream that is already filtered (by key to the fine grained event) and mapped to the actual value.
     setupStream(stream) {
-      this.logger.debug(`[user createConsumers()] ...`);
+      this.logger.debug(`[user setupStream()] - Start`);
 
       //const stream = this.kafkaStreamsFactory.getKStream(this.topic);
       stream
+        .map(item => {
+          this.logger.debug(`[user setupStream()] - map item: `, item);
+          return item;
+        })
         .filter(({ key }) => key === "signUpRequested")
         .map(({ value }) => value)
-        .observe(this.onSignUpRequested);
+        .forEach(this.onSignUpRequested);
+
+      stream
+        .filter(({ key }) => key === "signUpRequestAccepted")
+        .map(({ value }) => value)
+        .forEach(this.onSignUpRequestAccepted);
     },
 
     async validateSignUpRequest(ctx, params) {
@@ -65,15 +74,21 @@ module.exports = {
 
     async newUserAccount(params) {
       this.logger.debug(
-        `user newUserAccount() params: ${JSON.stringify(params)}`
+        `[user newUserAccount()] params: ${JSON.stringify(params)}`
       );
       //TODO save user data
-      return param;
+      return { id: "new-user-id", params };
+    },
+
+    async onSignUpRequestAccepted(params) {
+      this.logger.debug(
+        `[user onSignUpRequestAccepted()] params: ${JSON.stringify(params)}`
+      );
     },
 
     async onSignUpRequested(params) {
       this.logger.debug(
-        `user onSignUpRequested() params: ${JSON.stringify(params)}`
+        `[user onSignUpRequested()] params: ${JSON.stringify(params)}`
       );
       let errors = await this.validateSignUpRequest(params);
       if (errors) {

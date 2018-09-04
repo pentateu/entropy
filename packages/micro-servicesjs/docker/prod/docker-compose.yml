@@ -57,6 +57,9 @@ services:
       -  ../logstash/pipeline:/usr/share/logstash/pipeline:ro
     ports:
       - "5000:5000"
+      - "5001:5001"
+    expose:
+      - 5001
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     # networks:
@@ -260,14 +263,11 @@ services:
     environment:
       LOGLEVEL: debug
       PROMETHEUS_PORT: 3061
-
     working_dir: /src
     volumes:
       - ../..:/src
       - node_modules:/src/node_modules
-
     command: /bin/sh -c "npm install && npm run start-core"
-    
     links:
       - jaeger-collector
       - nats
@@ -289,8 +289,34 @@ services:
   mongo:
     image: mongo
 
+  nats-metrics:
+    build:
+      context: ../prometheus-nats-exporter/
+    ports:
+      - "5050:7777"
+    command: -varz -connz -routez -subz -r tcp://logstash:5001 "http://nats:8222"
+    links:
+      - nats
+      - logstash
+    depends_on:
+       - nats
+       - logstash
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.backend=nats-metrics"
+      - "traefik.port=5050"
+
   nats:
     image: nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+      - "6222:6222"
+    command: -r tcp://logstash:5001
+    links:
+      - logstash
+    depends_on:
+       - logstash
 
   traefik:
     image: traefik
@@ -300,6 +326,22 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /dev/null:/traefik.toml
+
+  website:
+    image: node:10-alpine
+    ports:
+      - "3000:3000"
+      - "35729:35729"
+    working_dir: /src/website
+    volumes:
+      - ../..:/src
+    command: /bin/sh -c "npm run start"
+    labels:
+      - "traefik.enable=true"   
+      - "traefik.website.backend=website"
+      - "traefik.website.port=3000"
+      - "traefik.websiteLiveReload.backend=websiteLiveReload"
+      - "traefik.websiteLiveReload.port=35729"
 
 # networks:
 #   elk:
