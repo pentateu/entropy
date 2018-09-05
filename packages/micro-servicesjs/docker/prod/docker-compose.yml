@@ -3,6 +3,7 @@ version: "3.0"
 volumes:
   node_modules:
   grafana-storage:
+  kafka-data:
   
 services:
   kibana:
@@ -83,6 +84,8 @@ services:
 
   kafka:
     image: landoop/fast-data-dev
+    volumes:
+      - ../kafka/data:/data
     restart: on-failure
     expose:
       - "3030"
