@@ -17,7 +17,7 @@ module.exports = {
       producerReadyTimeout: 3000, //3 seconds
 
       brokerOptions: {
-        "metadata.broker.list": "kafka.prod.docker.localhost:9092", //native client requires broker hosts to connect to
+        "metadata.broker.list": "localhost:9092", //native client requires broker hosts to connect to
 
         "enable.auto.commit": false,
         "auto.commit.interval.ms": 100,
@@ -124,13 +124,25 @@ module.exports = {
         } kafka mixin onnectKakfaStreams()] Connecting to Kafka ...`
       );
       this.kafkaStreamsFactory = new KafkaStreams(this.kafkaNativeConfig());
-      this.stream = this.kafkaStreamsFactory.getKStream(this.topic);
-      await this.stream.start();
-      this.setupStream(this.stream);
+      this.setupStream();
+      this.writeStream = this.kafkaStreamsFactory.getKStream();
+      this.writeStream.to(this.topic);
+      try {
+        await this.writeStream.start();
+      } catch (error) {
+        //temp try/catch to denbug error
+        this.logger.error(
+          `[${
+            this.name
+          } kafka mixin onnectKakfaStreams()] Error on this.writeStream.start() -> Error:`,
+          error
+        );
+      }
+      this.logger.info(`[${this.name} kafka mixin onnectKakfaStreams()] Done!`);
     },
 
     //to be implemented by the service
-    setupStream(stream) {},
+    setupStream() {},
 
     async connectKafkaClient() {
       this.logger.info(
@@ -162,7 +174,7 @@ module.exports = {
       });
     },
 
-    async storeKafkaEvent(key, value) {
+    storeKafkaEvent(key, value) {
       this.logger.debug(
         `[${
           this.name
@@ -170,7 +182,7 @@ module.exports = {
           value
         )}`
       );
-      this.stream.writeToStream({
+      this.writeStream.writeToStream({
         key,
         value: { eventCreated: Date.now(), ...value }
       });
@@ -178,9 +190,8 @@ module.exports = {
   },
 
   async started() {
-    this.logger.debug("[${this.name} kafka mixin started()] ... ");
-    //await this.connectKafkaClient();
-    this.connectKakfaStreams();
-    this.logger.info(`[${this.name} started()] - Kafka connected.!`);
+    this.logger.debug(`[${this.name} kafka mixin started()] called!`);
+    await this.connectKakfaStreams();
+    this.logger.info(`[${this.name} started()] - Done.`);
   }
 };

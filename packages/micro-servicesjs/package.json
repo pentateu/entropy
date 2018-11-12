@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "moleculer-runner --repl --hot --config moleculer.dev.config.js src",
     "start-api": "moleculer-runner -i 2 -H src/services/gateway.service.js src/services/graphql.service.js src/services/metrics.*.service.js",
-    "start-core": "moleculer-runner -i 2 -H src/services/user.service.js",
+    "start-core": "moleculer-runner -H src/services/user.service.js src/services/notification.service.js",
     "api-tests": "concurrently \"npm run api-tests-server\" \"npm run api-tests-watch\"",
     "api-tests-server": "http-server /services -p $PORT",
     "api-tests-watch": "nodemon -x 'just-api --reporter html /services/test/e2e/'"

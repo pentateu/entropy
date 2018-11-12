@@ -23,7 +23,7 @@ Tools to create your own 10X team!
 - **website** - this page :) + all documentation with live reload as you change - (http://localhost:3000/)
 - **traefic** - reverse proxy and load balancer - (http://localhost:3001/dashboard/)
 - **kibana**  - Elastic Search Web UI / Log viewer for the whole stack - (http://www.kibana.prod.docker.localhost:5601/)
-- **kafka**   - Fast Data Dashboard for Kafka - (kafka.prod.docker.localhost:3030)
+- **kafka**   - Fast Data Dashboard for Kafka - (http://kafka.prod.docker.localhost:3030)
 - **jaeger**  - Jaeger is the mnicroservices tracing tool - (http://jaeger-query.prod.docker.localhost:16686/trace/5254eb4160e44bc3)
 - **prometheus** - Metrics- (http://www.prometheus.prod.docker.localhost:9090/)
 - **grafana** - timeseries dashboards - (http://grafana.prod.docker.localhost:3000)
@@ -32,6 +32,11 @@ Tools to create your own 10X team!
 
 
 ## Setup
+
+### Kafka
+#### Create New Kafka Topic
+1. Access kafka container terminal -: right click in the container in the docker panel and select -> attach shell.
+2. ```$ kafka-topics --zookeeper localhost:2181 --create --topic "user.service" --replication-factor 1 --partitions 1 --if-not-exists```
 
 ### NATS
 - Logs: 

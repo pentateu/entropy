@@ -85,7 +85,7 @@ services:
   kafka:
     image: landoop/fast-data-dev
     volumes:
-      - ../kafka/data:/data
+      - kafka-data:/data
     restart: on-failure
     expose:
       - "3030"
@@ -344,3 +344,4 @@ services:
       - kafka
     labels:
       - "traefik.enable=false"
+      - "sopmestuff=x"
